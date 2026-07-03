@@ -68,6 +68,19 @@ No fluxo interativo:
 - Selecione o escopo **Global** e pressione **Enter**.
 - Escolha **Symlink** e pressione **Enter**.
 
+### 3. Verificar que está tudo pronto ✅
+
+Antes de começar o exercício, confirme que as ferramentas e os comandos estão disponíveis:
+
+- [ ] `node --version`, `npm --version` e `npx --version` retornam uma versão (Node.js OK).
+- [ ] `openspec --version` retorna uma versão (OpenSpec instalado).
+- [ ] No **Claude Code**, digite `/` e confirme que o comando **`/grill-me`** aparece na lista de skills.
+- [ ] No **Claude Code**, digite `/` e confirme que o comando **`/opsx:new`** aparece na lista.
+
+Se algum item falhar:
+- `/grill-me` não aparece → refaça o **Passo 2** (skills do `mattpocock/skills`) e reinicie o Claude Code.
+- `/opsx:new` não aparece → confirme que o `openspec init` foi rodado neste repo (**Passo 1**) e reinicie o Claude Code.
+
 ---
 
 ## Pré-requisitos (facilitador prepara ANTES)
