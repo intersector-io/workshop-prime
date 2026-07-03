@@ -24,6 +24,30 @@ Ontem vocês construíram um site de abertura de sinistro **no improviso**. Hoje
 
 ## Setup — instalação das ferramentas
 
+### 0. Instalar o Node.js (inclui `npm` e `npx`)
+
+Os comandos abaixo (`npm` e `npx`) exigem o **Node.js** instalado. O `npm` e o `npx` já vêm juntos na instalação do Node.js.
+
+**Windows / macOS:**
+- Baixe o instalador **LTS** em [nodejs.org](https://nodejs.org/) e execute-o (Next → Next → Finish).
+- Alternativa via gerenciador de pacotes:
+  - Windows (winget): `winget install OpenJS.NodeJS.LTS`
+  - macOS (Homebrew): `brew install node`
+
+**Linux (Debian/Ubuntu):**
+```bash
+curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+**Verifique a instalação** (reabra o terminal se necessário):
+```bash
+node --version
+npm --version
+npx --version
+```
+Se os três comandos exibirem uma versão, o `npm` e o `npx` estão prontos para os próximos passos.
+
 ### 1. Instalar o OpenSpec
 
 ```bash
