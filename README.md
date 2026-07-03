@@ -3,32 +3,54 @@
 
 Ontem vocês construíram um site de abertura de sinistro **no improviso**. Hoje, em 1 hora, vocês percorrem o mesmo domínio **com método** — usando documentos já prontos como ponto de partida.
 
-> **A ideia central:** os artefatos de produto e técnicos (Vision, Feature Map, PRD, TRD) já estão aqui. Seu trabalho não é criá-los do zero, é **completar, extrair as regras e transformar tudo em código rastreável** com o OpenSpec. É assim que um agente deixa de fazer vibe coding e passa a ser confiável.
+> **A ideia central:** os artefatos de produto (Vision, Feature Map, PRD) já estão aqui. Seu trabalho não é criá-los do zero, é **completar, extrair as regras e transformar tudo em código rastreável** com o OpenSpec. É assim que um agente deixa de fazer vibe coding e passa a ser confiável.
 
 ---
 
 ## O fluxo em uma imagem
 
 ```
- vision.md → feature-map.md → [escolher 1 feature] → prd.md + trd.md
-                                                          │
-                                        extrair ──────────┤
-                                                          ▼
-                                     RF (do PRD) + RNF (do TRD)
-                                                          │
-                                                          ▼
-                            OpenSpec:  /opsx:propose → /opsx:apply
-                                       (spec acordada → código)
+ vision.md → feature-map.md → [escolher 1 feature] → prd.md
+                                                        │
+                                     grill-me ──────────┤  (completar gaps + melhorar)
+                                                        ▼
+                                    OpenSpec:  /opsx:new
+                                    (spec acordada → artefatos rastreáveis)
 ```
 
-**Regra de ouro:** todo item da spec tem que apontar para um **RF** ou um **RNF**. Se não aponta, é escopo escondido.
+**Regra de ouro:** todo item da spec tem que apontar para uma regra do **PRD**. Se não aponta, é escopo escondido.
+
+---
+
+## Setup — instalação das ferramentas
+
+### 1. Instalar o OpenSpec
+
+```bash
+npm install -g @fission-ai/openspec@latest
+cd your-project
+openspec init
+```
+
+### 2. Instalar as skills do pacote `mattpocock/skills`
+
+```bash
+npx skills@latest add mattpocock/skills
+```
+
+No fluxo interativo:
+- Selecione o pacote com a **barra de espaço** e pressione **Enter**.
+- Selecione **Claude Code** e pressione **Enter**.
+- Selecione o escopo **Global** e pressione **Enter**.
+- Escolha **Symlink** e pressione **Enter**.
 
 ---
 
 ## Pré-requisitos (facilitador prepara ANTES)
 
 - Repositório clonado nas máquinas (este kit).
-- OpenSpec instalado e `openspec init` já rodado no repo. Fluxo: `/opsx:propose → /opsx:apply → /opsx:archive`.
+- OpenSpec instalado e `openspec init` já rodado no repo (ver **Setup** acima). Fluxo: `/opsx:new`.
+- Skills do pacote `mattpocock/skills` instaladas (ver **Setup** acima) — inclui a skill `grill-me`.
 - Assistente de IA (Claude) conectado ao repo e pronto.
 - Cada dupla/grupo com uma feature escolhida (ou deixe escolherem no Passo 3).
 
@@ -37,7 +59,6 @@ Ontem vocês construíram um site de abertura de sinistro **no improviso**. Hoje
 product/vision.md              ← pronto (revisar)
 product/feature-map.md         ← pronto, ~40 features (revisar)
 docs/features/<feature>/prd.md ← SEMIPRONTO (completar)
-docs/features/<feature>/trd.md ← SEMIPRONTO (completar)
 ```
 Features semiprontas: **abertura-sinistro-por-foto**, **acompanhamento-status**, **upload-documentos**.
 
@@ -60,39 +81,28 @@ Features semiprontas: **abertura-sinistro-por-foto**, **acompanhamento-status**,
 - ✅ Localize as 3 features marcadas com ⭐ (as que estão semiprontas).
 - 💡 O Feature Map é onde o "grande" vira "fatiável".
 
-### Passo 3 · Escolher 1 feature e completar PRD + TRD — ⏱ 15 min
-📂 `docs/features/<feature-escolhida>/prd.md` **e** `.../trd.md`
+### Passo 3 · Escolher 1 feature e completar o PRD com a skill `grill-me` — ⏱ 20 min
+📂 `docs/features/<feature-escolhida>/prd.md`
 - Cada grupo escolhe **uma** das 3 features ⭐.
-- Abra o **PRD** e complete os trechos marcados `✍️ COMPLETAR`. Regra: PRD é **o quê/por quê**, nunca **o como**.
-- Abra o **TRD** e complete os trechos marcados `✍️ COMPLETAR`. Regra: TRD é **o como técnico**, respondendo ao PRD.
-- ✅ Divisão sugerida: PO no PRD, IT no TRD, com 2 min de conversa entre eles.
-- 💡 Se travar, o `✍️ COMPLETAR` sempre diz o que se espera ali.
+- Abra o **PRD** e localize os trechos marcados `✍️ COMPLETAR`.
+- Rode a skill **`grill-me`** (do pacote `mattpocock/skills`) para **preencher os gaps `COMPLETAR` e melhorar o PRD**: ela questiona o time até as decisões ficarem explícitas e testáveis.
+- Regra: PRD é **o quê/por quê**, nunca **o como**.
+- ✅ Divisão sugerida: PO conduz as respostas de negócio, IT desafia a viabilidade, com a `grill-me` puxando os pontos ainda abertos.
+- 💡 Se travar, o `✍️ COMPLETAR` sempre diz o que se espera ali — e a `grill-me` te empurra a fechar.
 
-### Passo 4 · Extrair RF e RNF — ⏱ 8 min
-📂 Adicione ao fim do próprio PRD/TRD (ou crie `business-rules.md` / `nfr.md`)
-- Do **PRD**, extraia os **RF** (regras de negócio testáveis). Formato: `ID | regra | origem | critério Given/When/Then`.
-- Do **TRD**, extraia os **RNF** (perf, segurança/LGPD, auditoria, disponibilidade). Todo RNF **precisa de número/critério**.
-- ✅ Peça ao Claude: *"extraia os requisitos funcionais deste PRD como regras testáveis com cenários Given/When/Then"* — e revisem a saída.
-- 💡 Momento "aha": o texto vira **regra com ID**. Um RF sem critério ou um RNF sem número **não está pronto**.
-
-### Passo 5 · Ciclo OpenSpec — proposal + apply — ⏱ 15 min
+### Passo 4 · Ciclo OpenSpec — `/opsx:new` — ⏱ 22 min
 📂 gera `openspec/changes/add-<feature>/`
-- Rode `/opsx:propose "<feature>"` **passando o PRD, o TRD e os RF/RNF como contexto** para o assistente.
-- Revise o `proposal.md` e as `specs/` geradas: para cada requisito, mostre **de qual RF/RNF ele veio** (rastreabilidade).
-- Rode `/opsx:apply` para o assistente implementar contra a spec acordada.
-- ✅ Cheque: os cenários da spec são os mesmos critérios de aceite dos RF? Deveriam ser.
-- 💡 Aqui o PRD/TRD são **insumos de origem**, não decoração. É o que impede o agente de "inventar".
+- Rode `/opsx:new` **passando o PRD completado como contexto** para o assistente.
+- A cada etapa do fluxo, **confira os artefatos gerados** antes de avançar: o `proposal.md`, as `specs/` e os cenários.
+- Para cada requisito da spec, mostre **de qual regra do PRD ele veio** (rastreabilidade).
+- ✅ Cheque: os cenários da spec são os mesmos critérios de aceite do PRD? Deveriam ser.
+- 💡 Aqui o PRD é **insumo de origem**, não decoração. É o que impede o agente de "inventar".
 
-### Passo 6 · Ver executando — ⏱ 4 min
-- Rode o que o `/opsx:apply` gerou (nem que seja o esqueleto/preview).
-- ✅ O ponto **não** é entregar produção — é ver a **spec virar código rastreável** em minutos.
-- 💡 Compare mentalmente com o site de ontem: dá para saber *por que* cada parte existe?
-
-### Passo 7 · Feedback da turma — ⏱ 8 min
+### Passo 5 · Feedback da turma — ⏱ 8 min
 Rode as perguntas abaixo (rápidas, todos respondem):
 1. Onde estava o **esforço de verdade** — pensar/decidir ou digitar?
 2. O que mudou em relação a **ontem** (vibe coding)? O que melhorou, o que ficou mais lento?
-3. Qual artefato foi **mais difícil** de completar e por quê?
+3. Qual parte do PRD foi **mais difícil** de completar e por quê?
 4. Onde a **IA acelerou** e onde ela **ainda precisou de decisão humana**?
 5. Daqui a 3 meses, para evoluir a feature, vocês partem **do site de ontem ou desta spec**? Por quê?
 
@@ -105,19 +115,17 @@ Rode as perguntas abaixo (rápidas, todos respondem):
 | 0 | Abertura | 4 min |
 | 1 | Revisar Vision | 3 min |
 | 2 | Revisar Feature Map | 3 min |
-| 3 | Completar PRD + TRD | 15 min |
-| 4 | Extrair RF + RNF | 8 min |
-| 5 | OpenSpec: propose + apply | 15 min |
-| 6 | Ver executando | 4 min |
-| 7 | Feedback | 8 min |
+| 3 | Completar PRD com `grill-me` | 20 min |
+| 4 | OpenSpec: `/opsx:new` | 22 min |
+| 5 | Feedback | 8 min |
 | | **Total** | **60 min** |
 
 ---
 
 ## Anti-padrões (o facilitador vigia)
 
-- PRD falando de tecnologia → o "como" vazou, devolva pro TRD.
-- RF vaga ("deve ser fácil de usar") → não é testável.
-- RNF sem número ("tem que ser rápido") → exija a métrica (ex.: ≤ 5 min p90).
-- Spec sem rastreio pra RF/RNF → é vibe coding com etapas a mais.
-- TRD que esquece as restrições regulatórias do PRD (auditoria, não-aprovação automática) → o erro mais comum.
+- PRD falando de tecnologia → o "como" vazou, é só o quê/por quê.
+- Regra vaga ("deve ser fácil de usar") → não é testável; use a `grill-me` para forçar o critério.
+- Requisito sem número ("tem que ser rápido") → exija a métrica (ex.: ≤ 5 min p90).
+- Spec sem rastreio pra regra do PRD → é vibe coding com etapas a mais.
+- PRD que esquece as restrições regulatórias (auditoria, não-aprovação automática) → o erro mais comum.
