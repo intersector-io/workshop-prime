@@ -110,6 +110,11 @@ Features semiprontas: **abertura-sinistro-por-foto**, **acompanhamento-status**,
 - Cada grupo escolhe **uma** das 3 features ⭐.
 - Abra o **PRD** e localize os trechos marcados `✍️ COMPLETAR`.
 - Rode a skill **`grill-me`** (do pacote `mattpocock/skills`) para **preencher os gaps `COMPLETAR` e melhorar o PRD**: ela questiona o time até as decisões ficarem explícitas e testáveis.
+
+  Exemplo de prompt para o assistente:
+  ```
+  Avalie o PRD docs\features\abertura-sinistro-por-foto\prd.md e o product\vision.md e use /grill-me para responder os gaps "COMPLETAR" e melhorar o PRD
+  ```
 - Regra: PRD é **o quê/por quê**, nunca **o como**.
 - ✅ Divisão sugerida: PO conduz as respostas de negócio, IT desafia a viabilidade, com a `grill-me` puxando os pontos ainda abertos.
 - 💡 Se travar, o `✍️ COMPLETAR` sempre diz o que se espera ali — e a `grill-me` te empurra a fechar.
