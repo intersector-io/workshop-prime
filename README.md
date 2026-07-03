@@ -135,6 +135,8 @@ Features semiprontas: **abertura-sinistro-por-foto**, **acompanhamento-status**,
 ### Passo 4 · Ciclo OpenSpec — `/opsx:new` — ⏱ 22 min
 📂 gera `openspec/changes/add-<feature>/`
 - Rode `/opsx:new` **passando o PRD completado como contexto** para o assistente.
+- ⚠️ O OpenSpec trabalha em **etapas**: depois do `/opsx:new`, o fluxo **não termina de uma vez**. A cada etapa ele vai pedir que você rode **`/opsx:continue`** para seguir para a próxima — repita quantas vezes for necessário.
+- Só rode **`/opsx:apply`** no **final**, quando todos os artefatos já estiverem revisados e acordados. Sequência típica: `/opsx:new` → `/opsx:continue` → `/opsx:continue` → … → `/opsx:apply`.
 - A cada etapa do fluxo, **confira os artefatos gerados** antes de avançar: o `proposal.md`, as `specs/` e os cenários.
 - Para cada requisito da spec, mostre **de qual regra do PRD ele veio** (rastreabilidade).
 - ✅ Cheque: os cenários da spec são os mesmos critérios de aceite do PRD? Deveriam ser.
